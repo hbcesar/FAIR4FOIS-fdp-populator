@@ -12,8 +12,8 @@ The FDPP was created to help people not very familiar with FAIR, to create metad
 	* password
 
 ## Use
-* The **user** fills in the template.
-* The **user** uploads the template to the metadata repository (or hands it over to the administrator).
+* The **user** fills in the template downloaded from https://github.com/LUMC-BioSemantics/EJP-RD-WP13-FDP-template.
+* The **user** uploads the template to the metadata repository (or hands it over to the administrator for the administrator to upload).
 * The **administrator** checks the metadata.
 * The **administrator** sets the target metadata and target catalog in the config.yml file, and starts the workflow using the start workflow button.
 * The **FDPP** converts the metadata from the Excel sheet into RDF documents.
