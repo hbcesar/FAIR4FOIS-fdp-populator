@@ -5,7 +5,7 @@ The FDPP was created to help people not very familiar with FAIR, to create metad
 ## Set up
 * If there is no FDP yet, set one up locally (https://fairdatapoint.readthedocs.io/en/latest/deployment/local-deployment.html) or online (https://fairdatapoint.readthedocs.io/en/latest/deployment/production-deployment.html).
 * Make a metadata repository like https://github.com/LUMC-BioSemantics/ejprd-wp13-metadata. This repository is connected to the FAIR Data Point Populator GitHub repository.
-* Connect the metadata repository to a FAIR Data Point by setting the GitHub secrets.
+* Connect the metadata repository to a FAIR Data Point by setting the GitHub secrets in the metadata repository.
 	* FDP URL
 	* FDP Persistant URL
 	* Username
