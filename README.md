@@ -12,7 +12,7 @@ The FDPP was created to help people not very familiar with FAIR, to create metad
 	* password
 
 ## Use
-* The **user** fills in the template downloaded from https://github.com/LUMC-BioSemantics/EJP-RD-WP13-FDP-template.
+* The **user** fills in the [FPD](https://github.com/LUMC-BioSemantics/EJP-RD-WP13-FDP-template) or [EJPRD](https://github.com/ejp-rd-vp/resource-metadata-schema/blob/master/template/EJPRD%20Resource%20Metadata%20template.xlsx) template.
 * The **user** uploads the template to the metadata repository (or hands it over to the administrator for the administrator to upload).
 * The **administrator** checks the metadata.
 * The **administrator** sets the target metadata and target catalog in the config.yml file, and starts the workflow using the start workflow button.
@@ -20,4 +20,4 @@ The FDPP was created to help people not very familiar with FAIR, to create metad
 * The **FDPP** publishes the RDF into the connected FAIR Data Point.
 
 ## EJPRD
-The EJPRD version of the tool is being prepared for users, and is in the VP branch of this repository
+The EJPRD version of the tool is being prepared for users, and is in the VP branch of this repository.

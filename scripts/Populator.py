@@ -1,9 +1,8 @@
 import FDPClient
 import Config
-import chevron
 import Utils
-import TemplateReader
-from rdflib import Graph
+from template_readers import FDPTemplateReader, VPTemplateReader
+import uuid
 
 
 
@@ -13,7 +12,6 @@ class Populator:
     """
     FDP_CLIENT = FDPClient.FDPClient(Config.FDP_URL, Config.FDP_USERNAME, Config.FDP_PASSWORD,
                                      Config.FDP_PERSISTENT_URL)
-    template_reader = TemplateReader.TemplateReader()
     UTILS = Utils.Utils()
 
     def __init__(self):
@@ -24,10 +22,11 @@ class Populator:
 
         # Read FDP templates and write to FDP if configured to do this
         if Config.DATASET_INPUT_FILE != None and Config.DISTRIBUTION_INPUT_FILE != None:
-            # GET datasets
-            datasets = self.template_reader.get_datasets()
-            # GET distributions
-            distributions = self.template_reader.get_distributions()
+            # Get dataset and distribution data
+            fdp_template_reader = FDPTemplateReader.FDPTemplateReader()
+            datasets = fdp_template_reader.get_datasets()
+            distributions = fdp_template_reader.get_distributions()
+
             # Populate FDP with datasets
             for dataset_name, dataset in datasets.items():
                 dataset_url = self.create_resource(dataset, "dataset")
@@ -53,23 +52,77 @@ class Populator:
         # Read VP templates and write to FDP if configured to do this
         if Config.EJP_VP_INPUT_FILE != None:
             # Read the excel template
-            organisations = self.template_reader.get_organisations()
-            biobanks = self.template_reader.get_biobanks()
-            patientregistries = self.template_reader.get_patientregistries()
+            vp_template_reader = VPTemplateReader.VPTemplateReader()
+            organisations = vp_template_reader.get_organisations()
+            biobanks = vp_template_reader.get_biobanks()
+            patientregistries = vp_template_reader.get_patientregistries()
+            datasets = vp_template_reader.get_datasets()
+            distributions = vp_template_reader.get_distributions()
+            dataservices = vp_template_reader.get_dataservices()
 
             # Create organisation entries first
             for organisation_name, organisation in organisations.items():
-                organisation_url = self.create_resource(organisation, "organisation")
-                # Create biobank entries
-                for biobank_name, biobank in biobanks.items():
+                organisation.URL = self.create_resource(organisation, "organisation")
+
+            # Create biobank entries
+            for biobank_name, biobank in biobanks.items():
+                # Link organisation
+                for organisation_name, organisation in organisations.items():
                     if biobank.PUBLISHER_NAME == organisation.TITLE:
-                        biobank.PUBLISHER_URL = organisation_url
-                        self.create_resource(biobank, "biobank")
-                # Create patient registry entries
-                for patientregistry_name, patientregistry in patientregistries.items():
+                        biobank.PUBLISHER_URL = organisation.URL
+                
+                # Create entry
+                biobank.URL = self.create_resource(biobank, "biobank")
+
+            # Create patient registry entries
+            for patientregistry_name, patientregistry in patientregistries.items():
+                # Link organisation
+                for organisation_name, organisation in organisations.items():
                     if patientregistry.PUBLISHER_NAME == organisation.TITLE:
-                        patientregistry.PUBLISHER_URL = organisation_url
-                        self.create_resource(patientregistry, "patientregistry")
+                        patientregistry.PUBLISHER_URL = organisation.URL
+
+                # Create entry
+                patientregistry.URL = self.create_resource(patientregistry, "patientregistry")
+
+            # Create datasets
+            for dataset_name, dataset in datasets.items():
+                # Link organisation
+                for organisation_name, organisation in organisations.items():
+                    if dataset.PUBLISHER_NAME == organisation.TITLE:
+                        dataset.PUBLISHER_URL = organisation.URL
+
+                # Create entry
+                dataset.URL = self.create_resource(dataset, "dataset")
+
+            # Create distributions
+            for distribution_name, distribution in distributions.items():
+                # Link organisation
+                for organisation_name, organisation in organisations.items():
+                    if distribution.PUBLISHER_NAME == organisation.TITLE:
+                        distribution.PUBLISHER_URL = organisation.URL
+
+                # Link dataset
+                for dataset_name, dataset in datasets.items():
+                    if distribution.DATASET_TITLE == dataset.TITLE:
+                        distribution.PARENT_URL = dataset.URL
+
+                # Create entry
+                distribution.URL = self.create_resource(distribution, "distribution")
+
+            # Create dataservices
+            for dataservice_name, dataservice in dataservices.items():
+                # Link datasets
+                for dataset_name, dataset in datasets.items():
+                    if dataset.TITLE in dataservice.DATASET_NAMES:
+                        dataservice.DATASET_URLS.append(dataset.URL)
+
+                # Link organisation
+                for organisation_name, organisation in organisations.items():
+                    if dataservice.PUBLISHER_NAME == organisation.TITLE:
+                        dataservice.PUBLISHER_URL = organisation.URL
+
+                # Create entry
+                dataservice.URL = self.create_resource(dataservice, "dataservice")
 
     def create_resource(self, resource, resource_type):
         """
@@ -82,8 +135,8 @@ class Populator:
         # Check if parent exists
         parent_url = resource.PARENT_URL
 
-        if not self.FDP_CLIENT.does_metadata_exists(parent_url):
-            raise SystemExit("The catalog <"+parent_url+"> doesn't exist. Provide valid catalog URL")
+        if not Config.DRY_RUN and not self.FDP_CLIENT.does_metadata_exists(parent_url):
+            raise SystemExit("The parent metadata <"+parent_url+"> does not exist. Provide valid catalog URL")
 
         print("The catalog <"+parent_url+"> exist")
 
@@ -92,6 +145,11 @@ class Populator:
 
         # Serialize graph and send to FDP
         post_body = graph.serialize(format='turtle')
-        resource_url = self.FDP_CLIENT.fdp_create_metadata(post_body, resource_type)
+        print("Sending the following RDF to FDP:")
+        print(post_body)
+        if Config.DRY_RUN:
+            resource_url = "http://example.org/" + resource_type + "/" + str(uuid.uuid4())
+        else:
+            resource_url = self.FDP_CLIENT.fdp_create_metadata(post_body, resource_type)
         print("New " + resource_type + " created: " + resource_url)
         return resource_url
