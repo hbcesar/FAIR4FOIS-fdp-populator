@@ -21,7 +21,7 @@ class FDPTemplateReader:
         catalog_url = Config.CATALOG_URL
         datasets = {}
         for row in reader:
-            if reader.line_num > 1:
+            if reader.line_num > 1 and row[0] != "":
                 print(row)
                 title = row[0]
                 publisher_url = row[1]
@@ -38,7 +38,7 @@ class FDPTemplateReader:
                 contact_point_url = None
 
                 if not description:
-                    description = "Metadata od dataset " + title
+                    description = "Metadata of dataset " + title
                 # Create language triples
                 if language:
                     language_url = "http://id.loc.gov/vocabulary/iso639-1/" + language.strip()
@@ -78,7 +78,7 @@ class FDPTemplateReader:
         reader = csv.reader(open(Config.DISTRIBUTION_INPUT_FILE, 'r'))
         distributions = {}
         for row in reader:
-            if reader.line_num > 1:
+            if reader.line_num > 1 and row[0] != "":
                 print(row)
                 title = row[0]
                 dataset_name = row[1]
@@ -96,7 +96,7 @@ class FDPTemplateReader:
                 license_url = None
 
                 if not description:
-                    description = "Metadata od dataset " + title
+                    description = "Metadata of distribution " + title
                 # Create language triples
                 if language:
                     language_url = "http://id.loc.gov/vocabulary/iso639-1/" + language.strip()
