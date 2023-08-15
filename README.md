@@ -1,11 +1,11 @@
 # FDP Populator
 ## Introduction
-The FDPP was created to help people not very familiar with FAIR, to create metadata in Excel sheets, and have these published in a FAIR Data Point (https://www.fairdatapoint.org/). The FDPP is a GitHub workflow, that reads the metadata from the repository, transforms this into RDF, and then publishes this on a FAIR Data Point.
+The FDPP was created to help people not very familiar with FAIR, to create metadata in Excel sheets, and have these published in a FAIR Data Point (https://www.fairdatapoint.org/). The FDP Populator is a GitHub workflow, that reads the metadata from the repository, transforms this into RDF, and then publishes this on a FAIR Data Point.
 
 ## Set up
 * If there is no FDP yet, set one up locally (https://fairdatapoint.readthedocs.io/en/latest/deployment/local-deployment.html) or online (https://fairdatapoint.readthedocs.io/en/latest/deployment/production-deployment.html).
-* Make a metadata repository like https://github.com/LUMC-BioSemantics/ejprd-wp13-metadata. This repository is connected to the FAIR Data Point Populator GitHub repository.
-* Connect the metadata repository to a FAIR Data Point by setting the GitHub secrets in the metadata repository.
+* Make a metadata repository like https://github.com/LUMC-BioSemantics/ejprd-wp13-metadata, for example, by cloning it. This repository is connected to the FAIR Data Point Populator GitHub repository.
+* Connect the metadata repository to a FAIR Data Point by setting the following GitHub secrets in the metadata repository.
 	* FDP URL
 	* FDP Persistant URL
 	* Username
@@ -19,5 +19,5 @@ The FDPP was created to help people not very familiar with FAIR, to create metad
 * The **FDPP** converts the metadata from the Excel sheet into RDF documents.
 * The **FDPP** publishes the RDF into the connected FAIR Data Point.
 
-## EJPRD
-The EJPRD version of the tool is being prepared for users, and is in the VP branch of this repository.
+## EJP RD
+The EJP RD version of this tool requires special configuration of the FAIR Data Point.
