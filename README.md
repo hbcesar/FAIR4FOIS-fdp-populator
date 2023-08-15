@@ -1,9 +1,9 @@
-# FDP Populator
+# FAIR Data Point Populator
 ## Introduction
-The FDPP was created to help people not very familiar with FAIR, to create metadata in Excel sheets, and have these published in a FAIR Data Point (https://www.fairdatapoint.org/). The FDP Populator is a GitHub workflow, that reads the metadata from the repository, transforms this into RDF, and then publishes this on a FAIR Data Point.
+The FAIR Data Point Populator was created to help people not very familiar with FAIR, to create metadata in Excel sheets, and have these published in a FAIR Data Point (https://www.fairdatapoint.org/). The FAIR Data Point Populator is a GitHub workflow, that reads the metadata from the repository, transforms this into RDF, and then publishes this on a FAIR Data Point.
 
 ## Set up
-* If there is no FDP yet, set one up locally (https://fairdatapoint.readthedocs.io/en/latest/deployment/local-deployment.html) or online (https://fairdatapoint.readthedocs.io/en/latest/deployment/production-deployment.html).
+* If there is no FAIR Data Point yet, set one up locally (https://fairdatapoint.readthedocs.io/en/latest/deployment/local-deployment.html) or online (https://fairdatapoint.readthedocs.io/en/latest/deployment/production-deployment.html).
 * Make a metadata repository like https://github.com/LUMC-BioSemantics/ejprd-wp13-metadata, for example, by cloning it. This repository is connected to the FAIR Data Point Populator GitHub repository.
 * Connect the metadata repository to a FAIR Data Point by setting the following GitHub secrets in the metadata repository.
 	* FDP URL (URL of the FAIR Data Point)
