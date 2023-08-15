@@ -11,6 +11,9 @@ The FDPP was created to help people not very familiar with FAIR, to create metad
 	* Username (username in the FAIR Data Point)
 	* password (password in the FAIR Data Point)
 
+## Set up alternative
+Alternatively, [this](https://colab.research.google.com/drive/1YeARH-hBJbg5Nz2MMnCB3RmS0uvXOHyU?usp=sharing) Jupyter notebook can be used. This still requires a FAIR Data Point to be available.
+
 ## Use
 * The **user** fills in the [FPD](https://github.com/LUMC-BioSemantics/EJP-RD-WP13-FDP-template) or [EJPRD](https://github.com/ejp-rd-vp/resource-metadata-schema/blob/master/template/EJPRD%20Resource%20Metadata%20template.xlsx) template.
 * The **user** uploads the template to the metadata repository (or hands it over to the administrator for the administrator to upload).
