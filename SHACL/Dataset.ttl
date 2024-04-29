@@ -1,0 +1,109 @@
+@prefix : <http://fairdatapoint.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dash: <http://datashapes.org/dash#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix mod: <https://w3id.org/mod#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix freq: <http://purl.org/cld/terms/Frequency/>.
+
+:DatasetShape a sh:NodeShape ;
+  sh:targetClass dcat:Dataset ;
+  sh:property
+    [
+      sh:name "Contributors" ;
+      sh:description "Identifies a foaf:Agent who contributed to the development of the dataset. When available, we recommend using a contributor's identifier from DBLP (e.g., \"https://dblp.org/pid/96/8280\") or ORCID (e.g., \"https://orcid.org/0000-0003-2736-7817\").";      
+      sh:path dct:contributor ;
+      sh:minCount 1 ;
+      sh:nodeKind sh:IRI ;
+      dash:editor dash:URIEditor ;
+      dash:viewer dash:LabelViewer ;
+    ],
+
+    [
+      sh:name "Landing Page" ;
+      sh:description "A Web page that can be navigated to in a Web browser to gain access to additional information about the resource. It must start with \"http://\" or \"https://\"." ;
+      sh:path dcat:landingPage ;
+      sh:nodeKind sh:IRI ;
+      sh:pattern "^https?://" ;
+      dash:editor dash:URIEditor ;
+      dash:viewer dash:URIViewer ;
+    ],
+
+	  [
+      sh:name "Keyword" ;
+      sh:description "A list of strings that identify the domains covered by the resource." ;
+      sh:path dcat:keyword ;
+      sh:nodeKind sh:Literal ;
+      sh:minCount 1 ;
+      sh:or (
+        [ sh:datatype xsd:string ; ]
+        [ sh:datatype rdf:langString ; ]
+      ) ;
+      dash:editor dash:TextFieldEditor ;
+      dash:viewer dash:LiteralViewer ;
+    ],
+
+	  [
+      sh:name "Acronym" ;
+      sh:description "The acronym one can use to refer to the dataset. E.g., \"GORO\", \"COVER\", \"OOC-O\"." ;
+      sh:path mod:acronym ;
+      sh:datatype xsd:string ;
+      dash:editor dash:TextFieldEditor ;
+      dash:viewer dash:LiteralViewer ;
+    ],
+
+    [
+      sh:name "Frequency" ;
+      sh:description "The frequency at which a dataset is published. The value of frequency gives the rate at which the dataset-as-a-whole is updated." ;
+      sh:path dct:accrualPeriodicity ;
+      sh:node [
+        a sh:NodeShape ;
+        sh:targetClass dct:Frequency ;
+        sh:property [
+          sh:path rdf:label ;
+          sh:nodeKind sh:IRI ;
+          sh:in (
+            freq:triennial
+            freq:biennial
+            freq:annual
+            freq:semiannual
+            freq:threeTimesAYear
+            freq:quarterly
+            freq:bimonthly
+            freq:monthly
+            freq:semimonthly
+            freq:biweekly
+            freq:threeTimesAMonth
+            freq:weekly
+            freq:semiweekly
+            freq:threeTimesAWeek
+            freq:daily
+            freq:continuous
+            freq:irregular
+          ) ;
+        ]
+      ] ;  
+    ],
+
+    [
+      sh:name "Temporal Coverage" ;
+      sh:description "The temporal period that the dataset covers. Enter the start and end dates of the period." ;
+      sh:path dct:temporal ;
+      sh:maxCount 1 ;
+      sh:datatype xsd:string ;
+      dash:editor dash:TextFieldEditor ;
+      dash:viewer dash:LiteralViewer ;
+    ],
+
+    [
+      sh:name "Temporal Resolution" ;
+      sh:description "Minimum time period resolvable in the dataset. If the dataset is a time-series this should correspond to the spacing of items in the series. For other kinds of dataset, this property will usually indicate the smallest time difference between items in the dataset. Use values according to https://www.w3.org/TR/xmlschema11-2/#duration" ;
+      sh:path dc:temporalResolution ;
+      sh:maxCount 1 ;
+      sh:datatype xsd:string ;
+      dash:editor dash:TextFieldEditor ;
+      dash:viewer dash:LiteralViewer ;
+    ]
+.

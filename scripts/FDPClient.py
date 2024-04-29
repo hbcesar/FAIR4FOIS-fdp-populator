@@ -11,7 +11,7 @@ class FDPClient:
     FDP_URL = None
     FDP_ADMIN_USERNAME = "albert.einstein@example.com"
     FDP_ADMIN_PASSWORD = "password"
-    FDP_P_URL =None
+    FDP_P_URL = None
 
     def __init__(self, fdp_url, username, password, persistent_url):
         self.FDP_URL = fdp_url

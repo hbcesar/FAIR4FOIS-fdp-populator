@@ -6,10 +6,7 @@
 loc:new
     a dcat:Resource;
     dct:description "{{description}}";
-    dct:hasVersion "1";
+    dct:hasVersion {{version}};
     dct:isPartOf <{{&parent_url}}>;
-    dct:publisher <{{&publisher_url}}>;
+    dct:issued {{issued}};
     dct:title "{{title}}".
-
-<{{&publisher_url}}> a foaf:Agent;
-    foaf:name "{{publisher_name}}".

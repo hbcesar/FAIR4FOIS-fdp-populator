@@ -1,0 +1,83 @@
+@prefix :         <http://fairdatapoint.org/> .
+@prefix dash:     <http://datashapes.org/dash#> .
+@prefix dcat:     <http://www.w3.org/ns/dcat#> .
+@prefix dct:      <http://purl.org/dc/terms/> .
+@prefix foaf:     <http://xmlns.com/foaf/0.1/>.
+@prefix sh:       <http://www.w3.org/ns/shacl#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+
+:ResourceShape a sh:NodeShape ;
+  sh:targetClass dcat:Resource ;
+  sh:property 
+    [
+      sh:name "Name" ;
+      sh:description "The name of the semantic artefact" ;
+      sh:path dct:title ;
+      sh:minCount 1 ;
+      sh:or (
+      	[ sh:datatype xsd:string ; ]
+      	[ sh:datatype rdf:langString ; ]
+      ) ;
+      dash:editor dash:TextFieldEditor ;
+      dash:viewer dash:LiteralViewer ;
+    ],
+
+
+    [
+      sh:name "Description" ;
+      sh:description "Short description of the semantic artefact" ;
+      sh:path dct:description ;
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+      sh:or (
+      	[ sh:datatype xsd:string ; ]
+      	[ sh:datatype rdf:langString ; ]
+      ) ;
+      dash:editor dash:TextFieldEditor ;
+      dash:viewer dash:LiteralViewer ;
+    ], 
+  
+    [
+      sh:path dct:hasVersion ;
+      sh:name "Version" ;
+      sh:nodeKind sh:Literal ;
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+      dash:editor dash:TextFieldEditor ;
+      dash:viewer dash:LiteralViewer ;
+    ],
+    
+   [
+      sh:name "Language" ;
+      sh:path dct:language ;
+      sh:nodeKind sh:IRI ;
+      sh:maxCount 1 ;
+      dash:editor dash:URIEditor ;
+      dash:viewer dash:LabelViewer ;
+    ],
+    
+    [
+      sh:name "License" ;
+      sh:description "Identifies a legal document under which the dataset is made available. E.g., \"https://creativecommons.org/licenses/by/4.0/\"." ;
+      sh:path dct:license ;
+      sh:nodeKind sh:IRI ;
+      sh:maxCount 1 ;
+      dash:editor dash:URIEditor ;
+      dash:viewer dash:LabelViewer ;
+    ], 
+  
+  	[
+      sh:name "Issued" ;
+      sh:description "Date of formal issuance of the dataset" ;
+      sh:path dct:issued ;
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+      sh:or (
+        [ sh:datatype xsd:dateTime ; ]
+        [ sh:datatype xsd:date ; ]
+        [ sh:datatype xsd:gYearMonth ; ]
+        [ sh:datatype xsd:gYear ; ]
+        ) ;
+      dash:editor dash:DatePickerEditor ;
+      dash:viewer dash:LiteralViewer ;
+    ] .

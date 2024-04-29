@@ -1,0 +1,93 @@
+@prefix : <http://fairdatapoint.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix mod: <https://w3id.org/mod#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix sema: <http://www.w3.org/fairforfois/sema#> .
+@prefix dash: <http://datashapes.org/dash#> .
+@prefix ocmv: <https://w3id.org/ontouml-models/vocabulary#> .
+
+:SemanticArtefactShape a sh:NodeShape ;
+  sh:targetClass sema:SemanticArtefact ;
+  sh:property
+    [
+      sh:name "Alternative Name" ;
+      sh:description "The alternative name of the semantic artefact" ;
+      sh:path dct:alternative ;
+      sh:or (
+      	[ sh:datatype xsd:string ; ]
+      	[ sh:datatype rdf:langString ; ]
+      ) ;
+      dash:editor dash:TextFieldEditor ;
+      dash:viewer dash:LiteralViewer ;
+    ],
+
+	[
+      sh:name "Artefact Type" ;
+      sh:path mod:artefactType ;
+        sh:description "The type of semantic artefact being described. Allowed values: mod:Taxonomy, mod:Thesaurus, mod:Terminology and owl:Ontology" ;
+      sh:path ocmv:ontologyType ;
+      sh:nodeKind sh:IRI ;
+      sh:maxCount 4 ;
+      sh:in ( 
+        mod:Taxonomy
+        mod:Thesaurus
+        mod:Terminology
+        owl:Ontology
+      ) ;
+      dash:editor dash:EnumSelectEditor ;
+      dash:viewer dash:LabelViewer ;
+    ],
+
+	[
+      sh:name "Ontology Specificity Level" ;
+      sh:description "The specificity level of the ontology according to how general it is. Allowed values: sema:FoundationalOntology for foundational ontologies, ocmv:Core for core ontologies, ocmv:Domain for domain ontologies, and ocmv:Application for application ontologies." ;
+      sh:path ocmv:ontologyType ;
+      sh:nodeKind sh:IRI ;
+      sh:maxCount 4 ;
+      sh:in ( 
+        sema:FoundationalOntology
+        ocmv:Domain
+        ocmv:Application
+        ocmv:Core
+      ) ;
+      dash:editor dash:EnumSelectEditor ;
+      dash:viewer dash:LabelViewer ;
+    ],
+
+    [
+      sh:name "Development Context" ;
+      sh:description "The list of contexts in which the semantic artefact was developed. The allowed values for this field are: \"research\", \"industry\", \"classroom\"." ;
+      sh:path ocmv:context ;
+      sh:maxCount 3 ;
+      sh:in (
+        ocmv:Classroom
+        ocmv:Industry
+        ocmv:Research
+      ) ;
+      dash:editor dash:EnumSelectEditor ;
+      dash:viewer dash:LabelViewer ;
+  ],
+
+  [
+    sh:name "Ontology Purpose" ;
+    sh:description "The list of goals that motivated the development of the semantic artefact. The allowed values are \"conceptual clarification\", \"data publication\", \"decision support system\", \"example\", \"information retrieval\", \"interoperability\", \"language engineering\", \"learning\", \"ontological analysis\", and \"software engineering\"." ;
+    sh:path mod:designedForTask ;
+    sh:nodeKind sh:IRI ;
+    sh:in (
+      ocmv:ConceptualClarification
+      ocmv:DataPublication
+      ocmv:DecisionSupportSystem
+      ocmv:Example
+      ocmv:InformationRetrieval
+      ocmv:Interoperability
+      ocmv:LanguageEngineering
+      ocmv:Learning
+      ocmv:OntologicalAnalysis
+      ocmv:SoftwareEngineering
+    ) ;
+    dash:editor dash:EnumSelectEditor ;
+    dash:viewer dash:LabelViewer ;
+  ]
+.

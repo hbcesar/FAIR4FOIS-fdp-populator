@@ -15,8 +15,8 @@ class Utils:
         with open('../templates/resource.mustache', 'r') as f:
             turtle_string = chevron.render(f, {'description': resource.DESCRIPTION, 'title': resource.TITLE,
                                       'parent_url': resource.PARENT_URL,
-                                      'publisher_url': resource.PUBLISHER_URL,
-                                      'publisher_name': resource.PUBLISHER_URL})
+                                      'version': resource.version,
+                                      'issued': resource.issued})
             graph.parse(data=turtle_string, format="turtle")
 
     def add_language_triples(self, resource, graph):
@@ -42,6 +42,18 @@ class Utils:
             with open('../templates/license.mustache', 'r') as f:
                 turtle_string = chevron.render(f, {'license_url': resource.LICENSE_URL})
                 graph.parse(data=turtle_string, format="turtle")
+
+    def add_landing_page(self, resource, graph):
+        if resource.LANDING_PAGE:
+            with open('../templates/landingpage.mustache', 'r') as f:
+                body = chevron.render(f, {'page_url': self.LANDING_PAGE})
+                graph.parse(data=body, format="turtle")
+
+    # def add_keywords(self, resource, graph):
+    #     keyword_str = ""
+    #     for keyword in resource.KEYWORDS:
+    #         keyword_str = keyword_str + ' "' + keyword + '",'
+    #     keyword_str = keyword_str[:-1]
     
     def list_to_rdf_literals(self, literal_list):
         # Return empty string if None

@@ -8,8 +8,10 @@ class Resource:
     PUBLISHER_URL = None
     LANGUAGE_URL = None
     LICENSE_URL = None
+    VERSION = None
+    ISSUED = None
 
-    def __init__(self, parent_url, title, description, publisher, language, license):
+    def __init__(self, parent_url, title, description, version, language, license, issued):
         """
         :param parent_url: Parent's FDP URL of a resource
         :param title: Title of a resource
@@ -21,6 +23,7 @@ class Resource:
         self.PARENT_URL = parent_url
         self.TITLE = title
         self.DESCRIPTION = description
-        self.PUBLISHER_URL = publisher
         self.LANGUAGE_URL = language
         self.LICENSE_URL = license
+        self.VERSION = version
+        self.ISSUED = issued

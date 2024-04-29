@@ -10,14 +10,13 @@ class Distribution(Resource.Resource):
     ACCESS_URL = None
     DOWNLOAD_URL = None
     MEDIA_TYPE = None
-    COMPRESSION_FORMAT = None
+    # COMPRESSION_FORMAT = None
     FORMAT = None
-    BYTE_SIZE = None
+    # BYTE_SIZE = None
     DATASET_NAME = None
 
-    def __init__(self, parent_url, title, description, publisher, language, license,
-                 access_url, download_url, media_type, compression_format, format,
-                 byte_size, dataset_name):
+    def __init__(self, parent_url, title, description, version, language, license, issued
+                 access_url, download_url, media_type, format, dataset_name):
         """
         
         :param parent_url: Dataset URL of a distribution. NOTE: this url should exist in an FDP
@@ -35,13 +34,11 @@ class Distribution(Resource.Resource):
         :param dataset_name: Dataset name of a distribution
         """
         # Pass core properties to parent class
-        super().__init__(parent_url, title, description, publisher, language, license)
+        super().__init__(parent_url, title, description, version, language, license, issued)
         self.ACCESS_URL = access_url
         self.DOWNLOAD_URL = download_url
         self.MEDIA_TYPE = media_type
-        self.COMPRESSION_FORMAT = compression_format
         self.FORMAT = format
-        self.BYTE_SIZE = byte_size
         self.DATASET_NAME = dataset_name
     
     def get_graph(self):

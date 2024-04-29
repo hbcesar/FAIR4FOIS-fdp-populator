@@ -3,7 +3,7 @@ import Utils
 import chevron
 from rdflib import Graph
 
-class Dataset(Resource.Resource):
+class ResearchResource(Resource.Resource):
     """
     This class extends Resource class with properties specific to dataset properties
     """
@@ -16,11 +16,25 @@ class Dataset(Resource.Resource):
     TEMPORAL_COVERAGE = None
     TEMPORAL_RESOLUTION = None
 
+    IDENTIFIER = None
+
     def __init__(self, parent_url, title, description, version, language, license, issued, contributors, 
-                 landing_page, keywords, acronym, frequency = None, temp_coverage = None, temp_resolution = None):
+                 landing_page, keywords, acronym, frequency = None, temp_coverage = None, temp_resolution = None, identifier):
+        """
+
+        :param parent_url: Parent's catalog URL of a dataset. NOTE this url should exist in an FDP
+        :param title: Title of a dataset
+        :param description: Description of a dataset
+        :param keywords: Keywords to describe a dataset
+        :param themes: Themes URLs to describe a dataset
+        :param publisher: Publisher URL of a dataset (e.g. https://orcid.org/0000-0002-1215-167X)
+        :param language: Language URL of a dataset (e.g. http://id.loc.gov/vocabulary/iso639-1/en)
+        :param license: License URL of a resource (e.g. http://rdflicense.appspot.com/rdflicense/cc-by-nc-nd3.0)
+        :param page: Landing page URL of a dataset
+        :param contact_point: Contact point URL or mailto URL of a dataset
+        """
         # Pass core properties to parent class
         super().__init__(parent_url, title, description, version, language, license, issued)
-
         self.CONTRIBUTORS = contributors
         self.LANDING_PAGE = landing_page
         self.KEYWORDS = keywords
@@ -29,6 +43,8 @@ class Dataset(Resource.Resource):
         self.FREQUENCY = frequency
         self.TEMPORAL_COVERAGE = temp_coverage
         self.TEMPORAL_RESOLUTION = temp_resolution
+
+        self.IDENTIFIER = identifier
     
     def get_graph(self):
         """
@@ -71,11 +87,11 @@ class Dataset(Resource.Resource):
             contributors_str = contributors_str + '<' + contributor + '>, '
         contributors_str = contributors_str[:-1]
             
-        # create dataset triples
-        with open('../templates/dataset.mustache', 'r') as f:
-            body = chevron.render(f, {'keyword': keyword_str, 'contributor': contributors_str, 'acronym': self.ACRONYM})
-            graph.parse(data=body, format="turtle")
 
-        #TODO: frequency, temporal, temporal
+        # create dataset triples
+        with open('../templates/research_resource.mustache', 'r') as f:
+            body = chevron.render(f, {'keyword': keyword_str, 'contributor': contributors_str, 'acronym': self.ACRONYM,
+                                      'identifier': self.IDENTIFIER})
+            graph.parse(data=body, format="turtle")
 
         return graph
