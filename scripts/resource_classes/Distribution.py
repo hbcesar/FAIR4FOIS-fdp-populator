@@ -15,8 +15,8 @@ class Distribution(Resource.Resource):
     # BYTE_SIZE = None
     DATASET_NAME = None
 
-    def __init__(self, parent_url, title, description, version, language, license, issued
-                 access_url, download_url, media_type, format, dataset_name):
+    def __init__(self, parent_url, title, description, version, language, license, issued,
+                 access_url, download_url, media_type, dataset_name):
         """
         
         :param parent_url: Dataset URL of a distribution. NOTE: this url should exist in an FDP
@@ -38,7 +38,7 @@ class Distribution(Resource.Resource):
         self.ACCESS_URL = access_url
         self.DOWNLOAD_URL = download_url
         self.MEDIA_TYPE = media_type
-        self.FORMAT = format
+        # self.FORMAT = format
         self.DATASET_NAME = dataset_name
     
     def get_graph(self):
@@ -58,16 +58,16 @@ class Distribution(Resource.Resource):
         self.UTILS.add_licence_triples(self, graph)
 
         # Create byte size triples
-        if self.BYTE_SIZE:
-            with open('../templates/bytesize.mustache', 'r') as f:
-                body = chevron.render(f, {'byte_size': self.BYTE_SIZE})
-                graph.parse(data=body, format="turtle")
+        # if self.BYTE_SIZE:
+        #     with open('../templates/bytesize.mustache', 'r') as f:
+        #         body = chevron.render(f, {'byte_size': self.BYTE_SIZE})
+        #         graph.parse(data=body, format="turtle")
 
         # Create format triples
-        if self.FORMAT:
-            with open('../templates/format.mustache', 'r') as f:
-                body = chevron.render(f, {'format': self.FORMAT})
-                graph.parse(data=body, format="turtle")
+        # if self.FORMAT:
+        #     with open('../templates/format.mustache', 'r') as f:
+        #         body = chevron.render(f, {'format': self.FORMAT})
+        #         graph.parse(data=body, format="turtle")
 
         distribution_url = None
         distribution_type = None
@@ -84,5 +84,7 @@ class Distribution(Resource.Resource):
             body = chevron.render(f, {'distribution_type': distribution_type, 'distribution_url': distribution_url,
                                       'media_type': self.MEDIA_TYPE})
             graph.parse(data=body, format="turtle")
+
+            # print(graph)
 
         return graph

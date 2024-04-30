@@ -2,11 +2,12 @@
 @prefix dct: <http://purl.org/dc/terms/>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
 @prefix loc: <http://localhost/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 
 loc:new
     a dcat:Resource;
     dct:description "{{description}}";
     dct:hasVersion {{version}};
     dct:isPartOf <{{&parent_url}}>;
-    dct:issued {{issued}};
+    dct:issued {{&issued}};
     dct:title "{{title}}".

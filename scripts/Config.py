@@ -10,7 +10,7 @@ FDP_PASSWORD = os.environ['FDP_PASSWORD']
 FDP_PERSISTENT_URL = os.environ['FDP_PERSISTENT_URL']
 DATASET_INPUT_FILE = None
 DISTRIBUTION_INPUT_FILE = None
-EJP_VP_INPUT_FILE = None
+# EJP_VP_INPUT_FILE = None
 DRY_RUN = None
 CATALOG_URL = None
 CONFIG_FILE = os.environ['CONFIG_FILE']
@@ -23,15 +23,16 @@ if os.path.isfile(CONFIG_FILE) :
     # Check for FDP template configuration
     try:
         DATASET_INPUT_FILE = os.path.join(BASE_PATH, config['dataset_file'])
-        DISTRIBUTION_INPUT_FILE = os.path.join(BASE_PATH, config['distribution'])
+        DISTRIBUTION_INPUT_FILE = os.path.join(BASE_PATH, config['distribution_file'])
+        SA_INPUT_FILE = os.path.join(BASE_PATH, config['sa_file'])
     except:
         pass
 
-    # Check for VP template configuration
-    try:
-        EJP_VP_INPUT_FILE = os.path.join(BASE_PATH, config['ejp_vp_file'])
-    except:
-        pass
+    # # Check for VP template configuration
+    # try:
+    #     EJP_VP_INPUT_FILE = os.path.join(BASE_PATH, config['ejp_vp_file'])
+    # except:
+    #     pass
 
     try:
         DRY_RUN = config['dry_run']

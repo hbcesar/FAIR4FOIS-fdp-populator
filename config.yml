@@ -1,12 +1,13 @@
 # Remote test FDP
-catalog_url: http://178.63.49.197:8051/catalog/d02af5a9-038f-44da-9447-0370fde9d9b4
+# catalog_url: http://178.63.49.197:8051/catalog/d02af5a9-038f-44da-9447-0370fde9d9b4
 
 # Local test FDP
-# catalog_url: http://localhost/catalog/72d363a3-7995-4358-a95c-b56083d2243d
+catalog_url: http://localhost/catalog/cfe9176f-1753-45b8-bda9-a47a6d5d3037
 
 # FDP template
-dataset_file: "test-input/datasets.csv"
-distribution: "test-input/distributions.csv"
+dataset_file: "test-input/fff-datasets.csv"
+distribution_file: "test-input/fff-distributions.csv"
+# sa_file: "test-input/semanticartefact.csv"
 
 # EJPRD template
 # ejp_vp_file: vp_test_input/EJPRD_Resource_Metadata_template.xlsx

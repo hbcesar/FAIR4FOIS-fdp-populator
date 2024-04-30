@@ -1,4 +1,5 @@
 import chevron
+# from datetime import datetime
 
 class Utils:
     """
@@ -15,8 +16,8 @@ class Utils:
         with open('../templates/resource.mustache', 'r') as f:
             turtle_string = chevron.render(f, {'description': resource.DESCRIPTION, 'title': resource.TITLE,
                                       'parent_url': resource.PARENT_URL,
-                                      'version': resource.version,
-                                      'issued': resource.issued})
+                                      'version': resource.VERSION,
+                                      'issued': resource.ISSUED})
             graph.parse(data=turtle_string, format="turtle")
 
     def add_language_triples(self, resource, graph):
@@ -43,17 +44,25 @@ class Utils:
                 turtle_string = chevron.render(f, {'license_url': resource.LICENSE_URL})
                 graph.parse(data=turtle_string, format="turtle")
 
-    def add_landing_page(self, resource, graph):
-        if resource.LANDING_PAGE:
-            with open('../templates/landingpage.mustache', 'r') as f:
-                body = chevron.render(f, {'page_url': self.LANDING_PAGE})
-                graph.parse(data=body, format="turtle")
+    # def add_landing_page(self, resource, graph):
+    #     if resource.LANDING_PAGE:
+    #         with open('../templates/landingpage.mustache', 'r') as f:
+    #             body = chevron.render(f, {'page_url': self.LANDING_PAGE})
+    #             graph.parse(data=body, format="turtle")
 
     # def add_keywords(self, resource, graph):
     #     keyword_str = ""
     #     for keyword in resource.KEYWORDS:
     #         keyword_str = keyword_str + ' "' + keyword + '",'
     #     keyword_str = keyword_str[:-1]
+
+    # #Adjust issued
+    # def adjust_issued(self, issued):
+    #     issued = datetime.strptime(issued, "%Y-%m-%d")
+    #     issued_format = "{year:d}-{month:02d}-{day:02d}"
+    #     issued = '"' + issued_format.format(year = issued.year, month = issued.month, day = issued.day) + 'T00:00:00Z"^^xsd:dateTime'
+
+    #     return issued
     
     def list_to_rdf_literals(self, literal_list):
         # Return empty string if None

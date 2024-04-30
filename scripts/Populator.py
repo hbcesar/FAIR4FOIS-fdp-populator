@@ -1,7 +1,7 @@
 import FDPClient
 import Config
 import Utils
-from template_readers import FDPTemplateReader, VPTemplateReader
+from template_readers import FDPTemplateReader #, VPTemplateReader
 import uuid
 
 
@@ -26,10 +26,13 @@ class Populator:
             fdp_template_reader = FDPTemplateReader.FDPTemplateReader()
             datasets = fdp_template_reader.get_datasets()
             distributions = fdp_template_reader.get_distributions()
+            # print(datasets)
+            # print(distributions)
 
             # Populate FDP with datasets
             for dataset_name, dataset in datasets.items():
                 dataset_url = self.create_resource(dataset, "dataset")
+                
                 # Populate FDP with distribution(s) as child to dataset
                 for distribution_name, distribution in distributions.items():
                     if distribution.DATASET_NAME == dataset_name:
@@ -49,80 +52,6 @@ class Populator:
                             distribution.DOWNLOAD_URL = download_url
                             self.create_resource(distribution, "distribution")
 
-        # Read VP templates and write to FDP if configured to do this
-        if Config.EJP_VP_INPUT_FILE != None:
-            # Read the excel template
-            vp_template_reader = VPTemplateReader.VPTemplateReader()
-            organisations = vp_template_reader.get_organisations()
-            biobanks = vp_template_reader.get_biobanks()
-            patientregistries = vp_template_reader.get_patientregistries()
-            datasets = vp_template_reader.get_datasets()
-            distributions = vp_template_reader.get_distributions()
-            dataservices = vp_template_reader.get_dataservices()
-
-            # Create organisation entries first
-            for organisation_name, organisation in organisations.items():
-                organisation.URL = self.create_resource(organisation, "organisation")
-
-            # Create biobank entries
-            for biobank_name, biobank in biobanks.items():
-                # Link organisation
-                for organisation_name, organisation in organisations.items():
-                    if biobank.PUBLISHER_NAME == organisation.TITLE:
-                        biobank.PUBLISHER_URL = organisation.URL
-                
-                # Create entry
-                biobank.URL = self.create_resource(biobank, "biobank")
-
-            # Create patient registry entries
-            for patientregistry_name, patientregistry in patientregistries.items():
-                # Link organisation
-                for organisation_name, organisation in organisations.items():
-                    if patientregistry.PUBLISHER_NAME == organisation.TITLE:
-                        patientregistry.PUBLISHER_URL = organisation.URL
-
-                # Create entry
-                patientregistry.URL = self.create_resource(patientregistry, "patientregistry")
-
-            # Create datasets
-            for dataset_name, dataset in datasets.items():
-                # Link organisation
-                for organisation_name, organisation in organisations.items():
-                    if dataset.PUBLISHER_NAME == organisation.TITLE:
-                        dataset.PUBLISHER_URL = organisation.URL
-
-                # Create entry
-                dataset.URL = self.create_resource(dataset, "dataset")
-
-            # Create distributions
-            for distribution_name, distribution in distributions.items():
-                # Link organisation
-                for organisation_name, organisation in organisations.items():
-                    if distribution.PUBLISHER_NAME == organisation.TITLE:
-                        distribution.PUBLISHER_URL = organisation.URL
-
-                # Link dataset
-                for dataset_name, dataset in datasets.items():
-                    if distribution.DATASET_TITLE == dataset.TITLE:
-                        distribution.PARENT_URL = dataset.URL
-
-                # Create entry
-                distribution.URL = self.create_resource(distribution, "distribution")
-
-            # Create dataservices
-            for dataservice_name, dataservice in dataservices.items():
-                # Link datasets
-                for dataset_name, dataset in datasets.items():
-                    if dataset.TITLE in dataservice.DATASET_NAMES:
-                        dataservice.DATASET_URLS.append(dataset.URL)
-
-                # Link organisation
-                for organisation_name, organisation in organisations.items():
-                    if dataservice.PUBLISHER_NAME == organisation.TITLE:
-                        dataservice.PUBLISHER_URL = organisation.URL
-
-                # Create entry
-                dataservice.URL = self.create_resource(dataservice, "dataservice")
 
     def create_resource(self, resource, resource_type):
         """

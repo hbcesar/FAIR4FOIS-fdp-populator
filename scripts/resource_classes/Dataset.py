@@ -48,27 +48,22 @@ class Dataset(Resource.Resource):
 
         # Create landing page triples
         # if self.LANDING_PAGE:
-        #     with open('../templates/landingpage.mustache', 'r') as f:
-        #         body = chevron.render(f, {'page_url': self.LANDING_PAGE})
-        #         graph.parse(data=body, format="turtle")
-        self.UTILS.add_landing_page(self, graph)
+        with open('../templates/landingpage.mustache', 'r') as f:
+            body = chevron.render(f, {'page_url': self.LANDING_PAGE})
+            graph.parse(data=body, format="turtle")
+        # self.UTILS.add_landing_page(self, graph)
 
         # Create keywords list
         keyword_str = ""
         for keyword in self.KEYWORDS:
             keyword_str = keyword_str + ' "' + keyword + '",'
         keyword_str = keyword_str[:-1]
-
-        # Create themes list
-        # theme_str = ""
-        # for theme in self.THEMES:
-        #     theme_str = theme_str + " <" + theme + ">,"
-        # theme_str = theme_str[:-1]
+        print(keyword_str)
 
         #Create contributors list
         contributors_str = ""
         for contributor in self.CONTRIBUTORS:
-            contributors_str = contributors_str + '<' + contributor + '>, '
+            contributors_str = contributors_str + ' <' + contributor + '>,'
         contributors_str = contributors_str[:-1]
             
         # create dataset triples

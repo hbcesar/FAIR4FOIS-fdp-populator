@@ -4,6 +4,7 @@
 @prefix language: <http://id.loc.gov/vocabulary/iso639-1/>.
 @prefix wd: <https://www.wikidata.org/wiki/>.
 @prefix loc: <http://localhost/>.
+@prefix mod: <https://w3id.org/mod#>.
 
 loc:new a dcat:Dataset.
 
@@ -12,7 +13,7 @@ loc:new dcat:keyword {{&keyword}}.
 {{/keyword}}
 
 {{#contributor}}
-loc:new dcat:contributor {{&contributor}}.
+loc:new dct:contributor {{&contributor}}.
 {{/contributor}}
 
-loc:new dcat:acronym {{acronym}}.
+loc:new mod:acronym "{{acronym}}".
