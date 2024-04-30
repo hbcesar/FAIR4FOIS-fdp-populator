@@ -9,7 +9,7 @@
 @prefix ocmv: <https://w3id.org/ontouml-models/vocabulary#> .
 
 :SemanticArtefactShape a sh:NodeShape ;
-  sh:targetClass sema:SemanticArtefact ;
+  sh:targetClass mod:SemanticArtefact ;
   sh:property
     [
       sh:name "Alternative Name" ;

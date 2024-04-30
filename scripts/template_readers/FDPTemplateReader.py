@@ -1,6 +1,6 @@
 import Config
 import csv
-from resource_classes import Dataset, Distribution
+from resource_classes import Dataset, Distribution, SemanticArtefact
 # import Utils
 from datetime import datetime
 
@@ -25,7 +25,7 @@ class FDPTemplateReader:
         catalog_url = Config.CATALOG_URL
         datasets = {}
         for row in reader:
-            if reader.line_num > 1 and row[0] != "":
+            if reader.line_num > 2 and row[0] != "":
                 title = row[0]
                 description = row[1]
                 contributors = row [2]
@@ -73,6 +73,75 @@ class FDPTemplateReader:
                                           license, issued, contributors_list, landing_page_url, keywords, acronym)
                 datasets[title] = dataset
         return datasets
+
+
+    def get_semantic_artefacts(self):
+        """
+        This method creates datasets objects by extracting content from the dataset input CSV file.
+        NOTE: This method assumes that provided input file follows this spec
+        <https://github.com/LUMC-BioSemantics/EJP-RD-WP19-FDP-template>
+
+        :return: Dict of datasets
+        """
+        
+        reader = csv.reader(open(Config.SEMANTIC_ARTEFACT_INPUT_FILE, 'r'), delimiter=";")
+        catalog_url = Config.CATALOG_URL
+        semantic_artefacts = {}
+        for row in reader:
+            if reader.line_num > 2 and row[0] != "":
+                title = row[0]
+                alternative_name = row[1]
+                description = row[2]
+                contributors = row [3]
+                license = row[4]
+                issued = row[5]
+                landing_page_url = row[6]
+                keywords_str = row[7]
+                acronym = row[8]
+                language = row[9]
+                version = "1.0"
+                artefact_type = row[10]
+                dev_context = row[11]
+                ont_level = row[12]
+                ont_purpose = row[13]
+
+                self.DATASET_NAME = title
+                self.LANGUAGE = language
+
+                if not description:
+                    description = "Metadata of dataset " + title
+                # Create language triples
+                # if language:
+                #     language_url = "http://id.loc.gov/vocabulary/iso639-1/" + language.strip()
+                
+                # Create license triples
+                # if license:
+                #     license_url = license.strip()
+               
+               # Create landing page triples
+                if landing_page_url:
+                    landing_page_url = landing_page_url.strip()
+                
+                # Create keywords list
+                keywords = []
+                for keyword in keywords_str.split(","):
+                    keyword = keyword.strip()
+                    keywords.append(keyword)
+                
+                # Creates contributors list
+                contributors_list = []
+                for contributor in contributors.split(","):
+                    contributor = contributor.strip()
+                    contributors_list.append(contributor)
+
+                #Adjust issued
+                issued = self.adjust_issued(issued)
+
+                semantic_artefact = SemanticArtefact.SemanticArtefact(catalog_url, title, description, version, language, 
+                                          license, issued, contributors_list, landing_page_url, keywords, acronym,
+                                          alternative_name, artefact_type, ont_level, dev_context, ont_purpose)
+                semantic_artefacts[title] = semantic_artefact
+        return semantic_artefacts
 
     def get_distributions(self):
         """

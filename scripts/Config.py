@@ -10,6 +10,7 @@ FDP_PASSWORD = os.environ['FDP_PASSWORD']
 FDP_PERSISTENT_URL = os.environ['FDP_PERSISTENT_URL']
 DATASET_INPUT_FILE = None
 DISTRIBUTION_INPUT_FILE = None
+SEMANTIC_ARTEFACT_INPUT_FILE = None
 # EJP_VP_INPUT_FILE = None
 DRY_RUN = None
 CATALOG_URL = None
@@ -24,7 +25,7 @@ if os.path.isfile(CONFIG_FILE) :
     try:
         DATASET_INPUT_FILE = os.path.join(BASE_PATH, config['dataset_file'])
         DISTRIBUTION_INPUT_FILE = os.path.join(BASE_PATH, config['distribution_file'])
-        SA_INPUT_FILE = os.path.join(BASE_PATH, config['sa_file'])
+        SEMANTIC_ARTEFACT_INPUT_FILE = os.path.join(BASE_PATH, config['semantic_artefact_file'])
     except:
         pass
 

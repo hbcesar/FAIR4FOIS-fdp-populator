@@ -1,9 +1,9 @@
 import FDPClient
 import Config
 import Utils
-from template_readers import FDPTemplateReader #, VPTemplateReader
+from template_readers import FDPTemplateReader
 import uuid
-
+import sys
 
 
 class Populator:
@@ -19,40 +19,71 @@ class Populator:
         This __init__ method exacts datasets and distribution objects from the input CSV files. These objects are used to
         create metadata entries in the FAIR Data Point.
         """
+        type = sys.argv[1]
+        print(type)
 
-        # Read FDP templates and write to FDP if configured to do this
-        if Config.DATASET_INPUT_FILE != None and Config.DISTRIBUTION_INPUT_FILE != None:
+        match type:
+            case "semantic-artefact":
+                self.create_semantic_artefact()
+                print("Bixo doido")
+            case "dataset":
+                self.create_datasets(self)
+            case "research-resource":
+                print("rr")
+            case _:
+                print("No/Incorrect arguments passed")
+                exit(1)
+
+
+    def create_semantic_artefact(self):
+         if Config.SEMANTIC_ARTEFACT_INPUT_FILE != None and Config.DISTRIBUTION_INPUT_FILE != None: #provavelmente mudar isso pra sysargs      
+            # Get SA and distribution data
+            fdp_template_reader = FDPTemplateReader.FDPTemplateReader()
+            semantic_artefacts = fdp_template_reader.get_semantic_artefacts()
+            print(semantic_artefacts)
+            # distributions = fdp_template_reader.get_distributions()
+
+            # Populate FDP with datasets
+            # for semantic_artefact_name, semantic_artefact in semantic_artefacts.items():
+                # semantic_artefact_url = self.create_resource(dataset, "dataset")
+
+                # self.create_distributions(distributions, semantic_artefact_name, semantic_artefact_url)
+    
+    
+    def create_datasets(self):
+        if Config.DATASET_INPUT_FILE != None and Config.DISTRIBUTION_INPUT_FILE != None: #provavelmente mudar isso pra sysargs      
             # Get dataset and distribution data
             fdp_template_reader = FDPTemplateReader.FDPTemplateReader()
             datasets = fdp_template_reader.get_datasets()
             distributions = fdp_template_reader.get_distributions()
-            # print(datasets)
-            # print(distributions)
 
             # Populate FDP with datasets
             for dataset_name, dataset in datasets.items():
-                dataset_url = self.create_resource(dataset, "dataset")
-                
-                # Populate FDP with distribution(s) as child to dataset
-                for distribution_name, distribution in distributions.items():
-                    if distribution.DATASET_NAME == dataset_name:
-                        distribution.PARENT_URL = dataset_url
+                # dataset_url = self.create_resource(dataset, "dataset")
 
-                        # This logic is required since both download and access URLs are captured in same row
-                        download_url = distribution.DOWNLOAD_URL
-                        distribution_name = distribution.TITLE
-                        if distribution.ACCESS_URL:
-                            distribution.TITLE = "Access distribution of : " + distribution_name
-                            distribution.DOWNLOAD_URL = None
-                            self.create_resource(distribution, "distribution")
+                self.create_distributions(distributions, dataset_name, dataset_url)
 
-                        if download_url:
-                            distribution.TITLE = "Downloadable distribution of : " + distribution_name
-                            distribution.ACCESS_URL = None
-                            distribution.DOWNLOAD_URL = download_url
-                            self.create_resource(distribution, "distribution")
+    
+    def create_distributions(self, distributions, dataset_name, dataset_url):
+        # Populate FDP with distribution(s) as child to dataset
+        for distribution_name, distribution in distributions.items():
+            if distribution.DATASET_NAME == dataset_name:
+                distribution.PARENT_URL = dataset_url
 
+                # This logic is required since both download and access URLs are captured in same row
+                download_url = distribution.DOWNLOAD_URL
+                distribution_name = distribution.TITLE
+                if distribution.ACCESS_URL:
+                    distribution.TITLE = "Access distribution of : " + distribution_name
+                    distribution.DOWNLOAD_URL = None
+                    # self.create_resource(distribution, "distribution")
 
+                if download_url:
+                    distribution.TITLE = "Downloadable distribution of : " + distribution_name
+                    distribution.ACCESS_URL = None
+                    distribution.DOWNLOAD_URL = download_url
+                    # self.create_resource(distribution, "distribution")
+    
     def create_resource(self, resource, resource_type):
         """
         Method to create resource of resource type in FDP
