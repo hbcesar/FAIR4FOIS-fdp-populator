@@ -5,18 +5,9 @@
 @prefix wd: <https://www.wikidata.org/wiki/>.
 @prefix loc: <http://localhost/>.
 @prefix mod: <https://w3id.org/mod#>.
+@prefix ocmv: <https://w3id.org/ontouml-models/vocabulary#> .
 
 loc:new a mod:SemanticArtefact.
-
-{{#keyword}}
-loc:new dcat:keyword {{&keyword}}.
-{{/keyword}}
-
-{{#contributor}}
-loc:new dct:contributor {{&contributor}}.
-{{/contributor}}
-
-loc:new mod:acronym "{{acronym}}".
 
 loc:new mod:artefactType mod:{{art_type}}.
 
@@ -24,4 +15,4 @@ loc:new mod:designedForTask ocmv:{{purpose}}.
 
 loc:new ocmv:context ocmv:{{context}}.
 
-loc:new ocmv:domain ocmv:{{domain}}.
+loc:new ocmv:ontologyType ocmv:{{level}}.

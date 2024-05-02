@@ -6,7 +6,8 @@ catalog_url: http://localhost/catalog/cfe9176f-1753-45b8-bda9-a47a6d5d3037
 
 # FDP template
 dataset_file: "test-input/fff-datasets.csv"
-distribution_file: "test-input/fff-distributions.csv"
+distribution_file: "test-input/fff-distribution.csv"
+# distribution_file: "test-input/fff-sa-distribution.csv"
 semantic_artefact_file: "test-input/fff-semantic-artefact.csv"
 
 # EJPRD template

@@ -46,39 +46,23 @@ class SemanticArtefact(Dataset.Dataset):
         self.UTILS = Utils.Utils()
         graph = Graph()
 
-        graph = super.get_graph(self)
-        #  # create resource triples
-        # self.UTILS.add_resource_triples(self, graph)
-        # # Create language triples
-        # self.UTILS.add_language_triples(self, graph)
-        # # Create license triples
-        # self.UTILS.add_licence_triples(self, graph)
+        graph = super().get_graph()
 
-        # # Create landing page triples
-        # # if self.LANDING_PAGE:
-        # with open('../templates/landingpage.mustache', 'r') as f:
-        #     body = chevron.render(f, {'page_url': self.LANDING_PAGE})
-        #     graph.parse(data=body, format="turtle")
-        # self.UTILS.add_landing_page(self, graph)
+        ontology_level = {'Foundational Ontology': 'Foundational', 'Core Ontology': 'Core', 'Domain Ontology': 'Domain',
+                          'Application Ontology': 'Application' }
+        ontology_purpose = {'Conceptual Clarification': 'ConceptualClarification', 'Data Clarification': 'DataClarification',
+                            'Decision Support System': 'DecisionSupportSystem', 'Example': 'Example', 
+                            'Information Retrieval': 'InformationRetrieval', 'Interoperability': 'Interoperability',
+                            'Language Engineering': 'LanguageEngineering', 'Learning': 'Learning', 
+                            'Ontological Analysis': 'OntologicalAnalysis', 'Software Engineering': 'SoftwareEngineering'}
+        
+        ontology_level = ontology_level[self.ONTOLOGY_LEVEL]
+        ontology_purpose = ontology_purpose[self.ONTOLOGY_PURPOSE]
 
-        # # Create keywords list
-        # keyword_str = ""
-        # for keyword in self.KEYWORDS:
-        #     keyword_str = keyword_str + ' "' + keyword + '",'
-        # keyword_str = keyword_str[:-1]
-        # print(keyword_str)
-
-        # #Create contributors list
-        # contributors_str = ""
-        # for contributor in self.CONTRIBUTORS:
-        #     contributors_str = contributors_str + ' <' + contributor + '>,'
-        # contributors_str = contributors_str[:-1]
-
-        # create s_a triples
+        # create semantic_artefact triples
         with open('../templates/semantic_artefact.mustache', 'r') as f:
-            body = chevron.render(f, {'keyword': keyword_str, 'contributor': contributors_str, 'acronym': self.ACRONYM,
-                                      'art_type': self.ARTEFACT_TYPE, 'purpose': self.ONTOLOGY_PURPOSE,
-                                       'context': self.DEVELOPMENT_CONTEXT, 'domain': self.ONTOLOGY_LEVEL })
+            body = chevron.render(f, {'art_type': self.ARTEFACT_TYPE, 'purpose': ontology_purpose,
+                                       'context': self.DEVELOPMENT_CONTEXT, 'level': ontology_level})
             graph.parse(data=body, format="turtle")
 
         return graph

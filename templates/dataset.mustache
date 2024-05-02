@@ -5,6 +5,7 @@
 @prefix wd: <https://www.wikidata.org/wiki/>.
 @prefix loc: <http://localhost/>.
 @prefix mod: <https://w3id.org/mod#>.
+@prefix freq: <http://purl.org/cld/terms/Frequency/>.
 
 loc:new a dcat:Dataset.
 
@@ -17,3 +18,15 @@ loc:new dct:contributor {{&contributor}}.
 {{/contributor}}
 
 loc:new mod:acronym "{{acronym}}".
+
+{{#frequency}}
+loc:new dct:accrualPeriodicity freq:{{frequency}}.
+{{/frequency}}
+
+{{#temporalCoverage}}
+loc:new dct:temporal "{{temporalCoverage}}".
+{{/temporalCoverage}}
+
+{{#temporalResolution}}
+loc:new dct:temporalResolution "{{&temporalResolution}}".
+{{/temporalResolution}}

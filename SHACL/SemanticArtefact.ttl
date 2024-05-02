@@ -27,14 +27,13 @@
       sh:name "Artefact Type" ;
       sh:path mod:artefactType ;
         sh:description "The type of semantic artefact being described. Allowed values: mod:Taxonomy, mod:Thesaurus, mod:Terminology and owl:Ontology" ;
-      sh:path ocmv:ontologyType ;
       sh:nodeKind sh:IRI ;
       sh:maxCount 4 ;
       sh:in ( 
         mod:Taxonomy
         mod:Thesaurus
         mod:Terminology
-        owl:Ontology
+        mod:Ontology
       ) ;
       dash:editor dash:EnumSelectEditor ;
       dash:viewer dash:LabelViewer ;

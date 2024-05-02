@@ -24,44 +24,57 @@ class Populator:
 
         match type:
             case "semantic-artefact":
-                self.create_semantic_artefact()
                 print("Bixo doido")
+                self.create_semantic_artefact()
             case "dataset":
-                self.create_datasets(self)
+                print("datasets")
+                self.create_datasets()
             case "research-resource":
                 print("rr")
             case _:
                 print("No/Incorrect arguments passed")
                 exit(1)
+        print('tchau')
 
 
     def create_semantic_artefact(self):
-         if Config.SEMANTIC_ARTEFACT_INPUT_FILE != None and Config.DISTRIBUTION_INPUT_FILE != None: #provavelmente mudar isso pra sysargs      
+         if Config.SEMANTIC_ARTEFACT_INPUT_FILE != None and Config.DISTRIBUTION_INPUT_FILE != None:
             # Get SA and distribution data
             fdp_template_reader = FDPTemplateReader.FDPTemplateReader()
             semantic_artefacts = fdp_template_reader.get_semantic_artefacts()
-            print(semantic_artefacts)
-            # distributions = fdp_template_reader.get_distributions()
+            distributions = fdp_template_reader.get_distributions()
 
             # Populate FDP with datasets
-            # for semantic_artefact_name, semantic_artefact in semantic_artefacts.items():
-                # semantic_artefact_url = self.create_resource(dataset, "dataset")
-
-                # self.create_distributions(distributions, semantic_artefact_name, semantic_artefact_url)
+            for semantic_artefact_name, semantic_artefact in semantic_artefacts.items():
+                semantic_artefact_url = self.create_resource(semantic_artefact, "sema")
+                self.create_distributions(distributions, semantic_artefact_name, semantic_artefact_url)
     
     
     def create_datasets(self):
-        if Config.DATASET_INPUT_FILE != None and Config.DISTRIBUTION_INPUT_FILE != None: #provavelmente mudar isso pra sysargs      
+        if Config.DATASET_INPUT_FILE != None and Config.DISTRIBUTION_INPUT_FILE != None:
             # Get dataset and distribution data
             fdp_template_reader = FDPTemplateReader.FDPTemplateReader()
             datasets = fdp_template_reader.get_datasets()
             distributions = fdp_template_reader.get_distributions()
 
+            print("Las distros:", distributions)
+
             # Populate FDP with datasets
             for dataset_name, dataset in datasets.items():
-                # dataset_url = self.create_resource(dataset, "dataset")
-
+                dataset_url = self.create_resource(dataset, "dataset")
                 self.create_distributions(distributions, dataset_name, dataset_url)
+
+    def create_research_resource(self):
+         if Config.SEMANTIC_ARTEFACT_INPUT_FILE != None and Config.DISTRIBUTION_INPUT_FILE != None:
+            # Get SA and distribution data
+            fdp_template_reader = FDPTemplateReader.FDPTemplateReader()
+            semantic_artefacts = fdp_template_reader.get_semantic_artefacts()
+            distributions = fdp_template_reader.get_distributions()
+
+            # Populate FDP with datasets
+            for semantic_artefact_name, semantic_artefact in semantic_artefacts.items():
+                semantic_artefact_url = self.create_resource(semantic_artefact, "sema")
+                self.create_distributions(distributions, semantic_artefact_name, semantic_artefact_url)
 
     
     def create_distributions(self, distributions, dataset_name, dataset_url):
@@ -76,13 +89,13 @@ class Populator:
                 if distribution.ACCESS_URL:
                     distribution.TITLE = "Access distribution of : " + distribution_name
                     distribution.DOWNLOAD_URL = None
-                    # self.create_resource(distribution, "distribution")
+                    self.create_resource(distribution, "distribution")
 
                 if download_url:
                     distribution.TITLE = "Downloadable distribution of : " + distribution_name
                     distribution.ACCESS_URL = None
                     distribution.DOWNLOAD_URL = download_url
-                    # self.create_resource(distribution, "distribution")
+                    self.create_resource(distribution, "distribution")
     
     def create_resource(self, resource, resource_type):
         """

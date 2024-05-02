@@ -1,4 +1,4 @@
-from resource_classes import Resource
+from resource_classes import Resource #, ResearchResource, SemanticArtefact
 import Utils
 import chevron
 from rdflib import Graph
@@ -58,7 +58,6 @@ class Dataset(Resource.Resource):
         for keyword in self.KEYWORDS:
             keyword_str = keyword_str + ' "' + keyword + '",'
         keyword_str = keyword_str[:-1]
-        print(keyword_str)
 
         #Create contributors list
         contributors_str = ""
@@ -67,10 +66,34 @@ class Dataset(Resource.Resource):
         contributors_str = contributors_str[:-1]
             
         # create dataset triples
-        with open('../templates/dataset.mustache', 'r') as f:
-            body = chevron.render(f, {'keyword': keyword_str, 'contributor': contributors_str, 'acronym': self.ACRONYM})
-            graph.parse(data=body, format="turtle")
+        # if isinstance(self, SemanticArtefact):
+        #     with open('../templates/dataset.mustache', 'r') as f:
+        #         body = chevron.render(f, {'keyword': keyword_str, 'contributor': contributors_str, 'acronym': self.ACRONYM})
+        #         graph.parse(data=body, format="turtle")
+        # elif isinstance(self, ResearchResource):
+        #     with open('../templates/dataset.mustache', 'r') as f:
+        #         body = chevron.render(f, {'keyword': keyword_str, 'contributor': contributors_str, 'acronym': self.ACRONYM})
+        #         graph.parse(data=body, format="turtle")
+        # else:
+        #     with open('../templates/dataset.mustache', 'r') as f:
+        #         body = chevron.render(f, {'keyword': keyword_str, 'contributor': contributors_str, 'acronym': self.ACRONYM})
+        #         graph.parse(data=body, format="turtle")
 
-        #TODO: frequency, temporal, temporal
+        #adjust frequency
+        if self.FREQUENCY != None:
+            f = self.FREQUENCY
+            f = f.title()
+            f = f[0].lower() + f[1:]
+            f = f.replace(" ", "")
+            self.FREQUENCY = f
+
+        print('Frequencia delas', self.FREQUENCY)
+
+        
+        with open('../templates/dataset.mustache', 'r') as f:
+                body = chevron.render(f, {'keyword': keyword_str, 'contributor': contributors_str, 'acronym': self.ACRONYM,
+                                          'frequency': self.FREQUENCY, 'temporalCoverage': self.TEMPORAL_COVERAGE, 
+                                          'temporalResolution': self.TEMPORAL_RESOLUTION })
+                graph.parse(data=body, format="turtle")
 
         return graph

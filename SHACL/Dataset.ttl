@@ -58,33 +58,27 @@
       sh:name "Frequency" ;
       sh:description "The frequency at which a dataset is published. The value of frequency gives the rate at which the dataset-as-a-whole is updated." ;
       sh:path dct:accrualPeriodicity ;
-      sh:node [
-        a sh:NodeShape ;
-        sh:targetClass dct:Frequency ;
-        sh:property [
-          sh:path rdf:label ;
-          sh:nodeKind sh:IRI ;
-          sh:in (
-            freq:triennial
-            freq:biennial
-            freq:annual
-            freq:semiannual
-            freq:threeTimesAYear
-            freq:quarterly
-            freq:bimonthly
-            freq:monthly
-            freq:semimonthly
-            freq:biweekly
-            freq:threeTimesAMonth
-            freq:weekly
-            freq:semiweekly
-            freq:threeTimesAWeek
-            freq:daily
-            freq:continuous
-            freq:irregular
-          ) ;
-        ]
-      ] ;  
+      sh:in (
+        freq:triennial
+        freq:biennial
+        freq:annual
+        freq:semiannual
+        freq:threeTimesAYear
+        freq:quarterly
+        freq:bimonthly
+        freq:monthly
+        freq:semimonthly
+        freq:biweekly
+        freq:threeTimesAMonth
+        freq:weekly
+        freq:semiweekly
+        freq:threeTimesAWeek
+        freq:daily
+        freq:continuous
+        freq:irregular
+      ) ;
+      dash:editor dash:URIEditor ;
+      dash:viewer dash:LabelViewer ;
     ],
 
     [

@@ -15,7 +15,6 @@
       sh:name "Access URL" ;
       sh:description "A URL of a service or location that can provide access to this resource, typically through a Web form, query or API call, e.g., landing page, feed, SPARQL endpoint. Either Access URL or Download URL must be provided." ;
       sh:path dcat:accessURL ;
-      sh:minCount 1 ;
       sh:nodeKind sh:IRI ;
       dash:editor dash:URIEditor ;
       dash:viewer dash:URIViewer ;
@@ -25,7 +24,6 @@
       sh:name "Download URL" ;
       sh:description "The URL of the downloadable file in a given format. Should be used for the URL at which this distribution is available directly, typically through a HTTP Get request. Either Access URL or Download URL must be provided. The URL can also be the identifier of the dataset. In this case, please use a globally unique and persistent identifier such as DOI, W3ID, PURL, etc." ;
       sh:path dcat:downloadURL ;
-      sh:minCount 1 ;
       sh:nodeKind sh:IRI ;
       dash:editor dash:URIEditor ;
       dash:viewer dash:URIViewer ;

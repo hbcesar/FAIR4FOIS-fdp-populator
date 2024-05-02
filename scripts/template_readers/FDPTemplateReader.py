@@ -4,14 +4,17 @@ from resource_classes import Dataset, Distribution, SemanticArtefact
 # import Utils
 from datetime import datetime
 
-DATASET_NAME = None
-LANGUAGE = None
+
 
 class FDPTemplateReader:
     """
     NOTE: this class is based on the folling specification:
     <https://github.com/LUMC-BioSemantics/EJP-RD-WP19-FDP-template>
     """
+
+    DATASET_NAME = None
+    LANGUAGE = None
+
     def get_datasets(self):
         """
         This method creates datasets objects by extracting content from the dataset input CSV file.
@@ -24,6 +27,7 @@ class FDPTemplateReader:
         reader = csv.reader(open(Config.DATASET_INPUT_FILE, 'r'), delimiter=";")
         catalog_url = Config.CATALOG_URL
         datasets = {}
+
         for row in reader:
             if reader.line_num > 2 and row[0] != "":
                 title = row[0]
@@ -36,6 +40,9 @@ class FDPTemplateReader:
                 acronym = row[7]
                 language = row[8]
                 version = row[9]
+                frequency = row[10]
+                temp_coverage = row[11]
+                temp_resolution = row[12]
 
                 self.DATASET_NAME = title
                 self.LANGUAGE = language
@@ -70,7 +77,8 @@ class FDPTemplateReader:
                 issued = self.adjust_issued(issued)
 
                 dataset = Dataset.Dataset(catalog_url, title, description, version, language, 
-                                          license, issued, contributors_list, landing_page_url, keywords, acronym)
+                                          license, issued, contributors_list, landing_page_url, keywords, acronym,
+                                          frequency, temp_coverage, temp_resolution)
                 datasets[title] = dataset
         return datasets
 
@@ -156,7 +164,6 @@ class FDPTemplateReader:
         distributions = {}
         for row in reader:
             if reader.line_num > 2 and row[0] != "":
-                print(row)
                 title = row[0]
                 version = row[1]
                 description = row[2]
